@@ -111,7 +111,7 @@ runs:
           }
 
     - name: Send Success Watch Message
-      if : success()
+      if : success() && inputs.message-type == 'watch'
       uses: slackapi/slack-github-action@v2.0.0
       with:
         webhook: ${{ inputs.webhook }}
@@ -121,7 +121,7 @@ runs:
             "text": ":circle-success: ${{ inputs.watch-success-message }}"
           }
     - name: Send Failure Watch Message
-      if : failure()
+      if : failure() && inputs.message-type == 'watch'
       uses: slackapi/slack-github-action@v2.0.0
       with:
         webhook: ${{ inputs.webhook }}
