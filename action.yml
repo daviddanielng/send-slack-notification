@@ -13,12 +13,12 @@ runs:
   using: "composite"
   steps:
     - name: Send Success Message
-        if: inputs.message-type == 'success'
+      if: inputs.message-type == 'success'
       uses: slackapi/slack-github-action@v2.0.0
       with:
         webhook: ${{ inputs.webhook }}
         webhook-type: incoming-webhook
         payload: |
           {
-            "text": ""Deployment started on web front end"
+            "text": "Deployment started on web front end"
           }
