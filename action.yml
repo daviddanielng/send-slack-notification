@@ -27,13 +27,13 @@ runs:
         webhook-type: incoming-webhook
         payload: |
           {
-              "text": "Deployment started",
+              "text": "${{ inputs.webhook }}",
               "blocks": [
                 {
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "*Deployment started on branch ${{ github.ref }} by push from* ${{ github.server_url }}/${{ github.actor }} ",
+                    "text": "*Deployment started on branch ${{ github.ref }} by push from * ${{ github.server_url }}/${{ github.actor }} ",
                   }
                 },
                 {
