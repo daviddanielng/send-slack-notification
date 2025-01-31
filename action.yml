@@ -9,18 +9,26 @@ inputs:
       - failure
       - success
       - start
+      - watch
   webhook:
     description: "Slack webhook URL"
     required: true
   message:
     description: "Message to send"
     required: true
+  watch-success-message:
+    description: "Something succeed, no message provided."
+    required: true
+  watch-failed-message:
+    description: "Message to send"
+    required: true
+    default: "Something Failed, no message provided."
 
 runs:
   using: "composite"
   steps:
     - name: Send Start Message
-      if: inputs.message-type == 'success'
+      if: inputs.message-type == 'start'
       uses: slackapi/slack-github-action@v2.0.0
       with:
         webhook: ${{ inputs.webhook }}
@@ -80,15 +88,17 @@ runs:
             }
 
     - name: Send Success Message
-      if: inputs.message-type == 'start'
+      if: inputs.message-type == 'success'
+      if : success()
       uses: slackapi/slack-github-action@v2.0.0
       with:
         webhook: ${{ inputs.webhook }}
         webhook-type: incoming-webhook
         payload: |
           {
-            "text": "${{ inputs.webhook }}"
+            "text": ":circle-success: ${{ inputs.webhook }}"
           }
+
     - name: Send Failure Message
       if: inputs.message-type == 'failure'
       uses: slackapi/slack-github-action@v2.0.0
@@ -99,3 +109,25 @@ runs:
           {
             "text": "${{ inputs.webhook }}"
           }
+
+    - name: Send Watch Message
+      if: inputs.message-type == 'watch'
+      if : success()
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ inputs.webhook }}
+        webhook-type: incoming-webhook
+        payload: |
+          {
+            "text": ":circle-success: ${{ inputs.watch-success-message }}"
+          }
+      if : failure()
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ inputs.webhook }}
+        webhook-type: incoming-webhook
+        payload: |
+          {
+            "text": ":circle-failed: ${{ inputs.watch-failed-message }}"
+          }
+        
