@@ -1,5 +1,5 @@
-name: "Hello World"
-description: "Greet someone"
+name: "Send Slack Message"
+description: "Send a message to a Slack channel"
 inputs:
   message-type:
     description: "Type of message to send"
