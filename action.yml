@@ -18,7 +18,7 @@ inputs:
     required: true
   watch-success-message:
     description: "Message to send, when watch succeeds"
-    default: "Something succeed, no message provided."
+    default: "Something succeeded, no message provided."
     required: true
   watch-failed-message:
     description: "Message to send, when watch fails"
