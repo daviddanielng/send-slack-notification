@@ -5,9 +5,20 @@ inputs:
     description: "Type of message to send, failure or success"
     required: true
     default: "success"
+  webhook:
+    description: "Slack webhook URL"
+    required: true
+
 runs:
   using: "composite"
   steps:
-    - name: Send to Slack
-      run: echo "Hello ${{ inputs.message-type }}."
-      shell: bash
+    - name: Send Success Message
+        if: inputs.message-type == 'success'
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+          webhook: ${{ inputs.webhook }}
+          webhook-type: incoming-webhook
+          payload: |
+            {
+              "text": ""Deployment started on web front end"
+            }
