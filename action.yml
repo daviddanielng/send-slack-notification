@@ -17,10 +17,11 @@ inputs:
     description: "Message to send"
     required: true
   watch-success-message:
-    description: "Something succeed, no message provided."
+    description: "Message to send, when watch succeeds"
+    default: "Something succeed, no message provided."
     required: true
   watch-failed-message:
-    description: "Message to send"
+    description: "Message to send, when watch fails"
     required: true
     default: "Something Failed, no message provided."
 
