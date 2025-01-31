@@ -91,7 +91,7 @@ runs:
         webhook-type: incoming-webhook
         payload: |
           {
-            "text": ":circle-success: ${{ inputs.webhook }}"
+            "text": ":circle-success: ${{ inputs.message }}"
           }
     - name: Send Plain Message
       if: inputs.message-type == 'plain'
