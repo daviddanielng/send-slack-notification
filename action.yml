@@ -90,7 +90,6 @@ runs:
 
     - name: Send Success Message
       if: inputs.message-type == 'success'
-      if : success()
       uses: slackapi/slack-github-action@v2.0.0
       with:
         webhook: ${{ inputs.webhook }}
@@ -112,7 +111,6 @@ runs:
           }
 
     - name: Send Watch Message
-      if: inputs.message-type == 'watch'
       if : success()
       uses: slackapi/slack-github-action@v2.0.0
       with:
