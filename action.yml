@@ -10,10 +10,7 @@ inputs:
       - success
       - start
       - watch
-  webhook:
-    description: "Slack webhook URL"
-    required: true
-    type: string
+ 
   message:
     description: "Message to send, this can be used for success messages"
     required: true
@@ -28,11 +25,11 @@ runs:
       if: inputs.message-type == 'start'
       uses: slackapi/slack-github-action@v2.0.0
       with:
-        webhook: ${{ inputs.webhook }}
+        webhook:${{ secrets.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
           {
-              "text": "${{ inputs.webhook }}",
+              "text": "${{ inputs.message }}",
               "blocks": [
                 {
                   "type": "section",
@@ -88,18 +85,18 @@ runs:
       if: inputs.message-type == 'success'
       uses: slackapi/slack-github-action@v2.0.0
       with:
-        webhook: ${{ inputs.webhook }}
+        webhook:${{ secrets.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
           {
-            "text": ":circle-success: ${{ inputs.webhook }}"
+            "text": ":circle-success:${{ secrets.SLACK_WEBHOOK_URL }}"
           }
 
     - name: Send Failure Message
       if: inputs.message-type == 'failure'
       uses: slackapi/slack-github-action@v2.0.0
       with:
-        webhook: ${{ inputs.webhook }}
+        webhook:${{ secrets.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
           {
@@ -110,7 +107,7 @@ runs:
       if: success() && inputs.message-type == 'watch'
       uses: slackapi/slack-github-action@v2.0.0
       with:
-        webhook: ${{ inputs.webhook }}
+        webhook:${{ secrets.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
           {
@@ -120,7 +117,7 @@ runs:
       if: failure() && inputs.message-type == 'watch'
       uses: slackapi/slack-github-action@v2.0.0
       with:
-        webhook: ${{ inputs.webhook }}
+        webhook:${{ secrets.SLACK_WEBHOOK_URL }}
         webhook-type: incoming-webhook
         payload: |
           {
