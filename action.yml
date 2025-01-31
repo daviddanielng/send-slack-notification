@@ -10,6 +10,7 @@ inputs:
       - success
       - start
       - watch
+      - plain
   webhook:
     description: "Slack webhook URL"
     required: true
@@ -18,8 +19,6 @@ inputs:
     description: "Message to send, this can be used for success messages"
     required: true
     type: string
- 
-
 
 runs:
   using: "composite"
@@ -94,6 +93,16 @@ runs:
           {
             "text": ":circle-success: ${{ inputs.webhook }}"
           }
+    - name: Send Plain Message
+      if: inputs.message-type == 'plain'
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ inputs.webhook }}
+        webhook-type: incoming-webhook
+        payload: |
+          {
+            "text": "${{ inputs.message }}"
+          }
 
     - name: Send Failure Message
       if: inputs.message-type == 'failure'
@@ -103,7 +112,7 @@ runs:
         webhook-type: incoming-webhook
         payload: |
           {
-            "text": "${{ inputs.webhook }}"
+            "text": ":circle-failed: ${{ inputs.message }}"
           }
 
     - name: Send Success Watch Message
