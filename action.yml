@@ -2,17 +2,24 @@ name: "Hello World"
 description: "Greet someone"
 inputs:
   message-type:
-    description: "Type of message to send, failure or success"
+    description: "Type of message to send"
     required: true
-    default: "success"
+    type: choice
+    options:
+      - failure
+      - success
+      - start
   webhook:
     description: "Slack webhook URL"
+    required: true
+  message:
+    description: "Message to send"
     required: true
 
 runs:
   using: "composite"
   steps:
-    - name: Send Sbbccess Message
+    - name: Send Start Message
       if: inputs.message-type == 'success'
       uses: slackapi/slack-github-action@v2.0.0
       with:
@@ -21,4 +28,25 @@ runs:
         payload: |
           {
             "text": "Deployment started on web front end"
+          }
+
+    - name: Send Success Message
+      if: inputs.message-type == 'start'
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ inputs.webhook }}
+        webhook-type: incoming-webhook
+        payload: |
+          {
+            "text": "${{ inputs.webhook }}"
+          }
+    - name: Send Failure Message
+      if: inputs.message-type == 'failure'
+      uses: slackapi/slack-github-action@v2.0.0
+      with:
+        webhook: ${{ inputs.webhook }}
+        webhook-type: incoming-webhook
+        payload: |
+          {
+            "text": "${{ inputs.webhook }}"
           }
